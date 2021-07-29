@@ -15,6 +15,10 @@ function restore(id) {
 	return ret
 }
 
+function resetStorage() {
+	aMyStorage.clear()
+}
+
 function write(str) {
 	aWriter.write(str)
 }

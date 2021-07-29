@@ -1,30 +1,30 @@
 var aWriter = null
-var aStore = null
-var aRestore = null
+var aMyStorage = null
 
-function myExport(writer, store, restore) {
-	aWriter = writer
-	aStore = store
-	aRestore = restore
+function myExport(pWriter, pMyStorage) {
+	aWriter = pWriter
+	aMyStorage = pMyStorage
 }
 
 function store(id, value) {
-	aStore(id, value)
+	aMyStorage.setItem(id, value);
 }
 
 function restore(id) {
-	var ret = aRestore(id)
+	var ret = aMyStorage.getItem(id);
+	return ret
+}
+
+function write(str) {
+	aWriter.write(str)
 }
 
 function test() {
-	// Storage
-	store("00", "AA")
-	var returnValue = restore("00")
-	alert(returnValue)
-	// write Text
-	aWriter("The Text")
+	store(1, 32)		// 1 is the key 32 the value
+	alert(restore(1))	// With the key I can get the value.
+	write("AAA")
 }
 
-function main() {// delete it
+function main() {		// delete it
 	test()
 }

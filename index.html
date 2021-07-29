@@ -7,28 +7,9 @@
 	</head>
 	<body>
 		<script>
-			const ERROR = "cannot access localStorage"
-			var writer = function(text) {
-				document.write(text)
-			}
-			function myRestore(id) {
-				var output
-				try {
-					output = localStorage.getItem(id);
-				} catch {
-					alert(ERROR)
-				}
-				return output
-			}
-			function myStore(id, value) {
-				var sid = "" + id
-				try {
-					localStorage.setItem(sid, value);
-				} catch {
-					alert(ERROR)
-				}
-			}
-			myExport(writer, myStore, myRestore)
+			var myDocument = document
+			var myStorage = localStorage
+			myExport(myDocument, myStorage)
 			main()
 		</script>
 	</body>

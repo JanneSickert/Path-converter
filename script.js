@@ -3,16 +3,25 @@ const WELLCOME_MESSAGE = "Here you can insert the path from the windows folder w
 + "added with enter and all paths are formatted in the form that is common in most "
 + "programming languages."
 const STANDART_MESSAGE = "Path:"
-const KEY = "00"
-
 var aWriter = null
-var aStore = null
-var aRestore = null
+var aMyStorage = null
 
-function myExport(writer, store, restore) {
-	aWriter = writer
-	aStore = store
-	aRestore = restore
+function myExport(pWriter, pMyStorage) {
+	aWriter = pWriter
+	aMyStorage = pMyStorage
+}
+
+function store(id, value) {
+	aMyStorage.setItem(id, value);
+}
+
+function restore(id) {
+	var ret = aMyStorage.getItem(id);
+	return ret
+}
+
+function write(str) {
+	aWriter.write(str)
 }
 
 function processed(val) {
@@ -28,12 +37,11 @@ function unconsciously() {// new user
 }
 
 function main() {
-	var state = aRestore(KEY)
-	alert(state)
-	if (state === "1") {
+	var state = restore(0)
+	if (state == 1) {
 		known()
 	} else {
 		unconsciously()
-		aStore(KEY, "1")
+		store(0, 1)
 	}
 }

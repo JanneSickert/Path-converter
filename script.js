@@ -3,10 +3,12 @@ const WELLCOME_MESSAGE = "Here you can insert the path from the windows folder w
 + "added with enter and all paths are formatted in the form that is common in most "
 + "programming languages."
 const STANDART_MESSAGE = "Path:"
+const ENTER_KEY = 13
 var aWriter = null
 var aMyStorage = null
 var arr = []
 var len = 0
+var myCodeArray = null
 
 function myExport(pWriter, pMyStorage) {
 	aWriter = pWriter
@@ -38,11 +40,25 @@ function write(str) {
 	aWriter.write(str)
 }
 
-function writePath(message) {
+function lineBreak() {
+	write("<br><br>")
+}
+
+function writePath() {
 	if (len == 1) {
 		write(arr[0])
 	} else {
-		// TODO make path array
+		myCodeArray = "{"
+		for (var i = 0; i < len; i++) {
+			myCodeArray = myCodeArray + "\"" + arr[i] + "\""
+			if (i == (len - 1)) {
+				myCodeArray = myCodeArray + "};"
+			} else {
+				myCodeArray = myCodeArray + ", "
+			}
+		}
+		write(myCodeArray)
+		lineBreak()
 	}
 }
 
@@ -64,8 +80,8 @@ function processed(val) {
 		}
 		arr.push(arrayToString(valAsArray))
 		len++
-		writePath()
 	}
+	writePath()
 }
 
 function known() {
@@ -76,7 +92,7 @@ function unconsciously() {// new user
 	processed(prompt(WELLCOME_MESSAGE))
 }
 
-function main() {
+function start() {
 	var state = restore(0)
 	if (state == 1) {
 		known()
@@ -84,4 +100,18 @@ function main() {
 		unconsciously()
 		store(0, 1)
 	}
+}
+
+var setKey = function() {
+	aWriter.onkeydown = function(event) {
+		if (event.keyCode == ENTER_KEY) {
+			start()
+			setKey()
+		}
+	}
+}
+
+function main() {
+	setKey()
+	start()
 }

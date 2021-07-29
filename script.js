@@ -5,10 +5,20 @@ const WELLCOME_MESSAGE = "Here you can insert the path from the windows folder w
 const STANDART_MESSAGE = "Path:"
 var aWriter = null
 var aMyStorage = null
+var arr = []
+var len = 0
 
 function myExport(pWriter, pMyStorage) {
 	aWriter = pWriter
 	aMyStorage = pMyStorage
+}
+
+function arrayToString(arr) {
+	var str = ""
+	for (var i = 0; i < arr.length; i++) {
+		str = str + arr[i]
+	}
+	return str
 }
 
 function store(id, value) {
@@ -20,12 +30,42 @@ function restore(id) {
 	return ret
 }
 
+function resetStorage() {
+	aMyStorage.clear()
+}
+
 function write(str) {
 	aWriter.write(str)
 }
 
+function writePath(message) {
+	if (len == 1) {
+		write(arr[0])
+	} else {
+		// TODO make path array
+	}
+}
+
 function processed(val) {
-	
+	if (val === "help") {
+		resetStorage()
+		location.reload()
+	} else {
+		var valAsArray = []
+		for (var i = 0; i < val.length; i++) {
+			if (val[i] == '\"') {
+				continue
+			}
+			if (val[i] == '\\') {
+				valAsArray.push("/")
+			} else {
+				valAsArray.push(val[i])
+			}
+		}
+		arr.push(arrayToString(valAsArray))
+		len++
+		writePath()
+	}
 }
 
 function known() {

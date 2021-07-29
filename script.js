@@ -9,6 +9,19 @@ var aMyStorage = null
 var arr = []
 var len = 0
 var myCodeArray = null
+var currentText = null
+
+function writeInClipboard() {
+	function copy2Clipboard(str) {
+		ta = document.createElement('textarea');
+		ta.value = str;
+		document.body.appendChild(ta);
+		ta.select();
+		document.execCommand('copy');
+		document.body.removeChild(ta);
+	}
+	copy2Clipboard(currentText)
+}
 
 function myExport(pWriter, pMyStorage) {
 	aWriter = pWriter
@@ -47,6 +60,7 @@ function lineBreak() {
 function writePath() {
 	if (len == 1) {
 		write(arr[0])
+		currentText = arr[0]
 	} else {
 		myCodeArray = "{"
 		for (var i = 0; i < len; i++) {
@@ -58,6 +72,7 @@ function writePath() {
 			}
 		}
 		write(myCodeArray)
+		currentText = myCodeArray
 		lineBreak()
 	}
 }
@@ -106,6 +121,7 @@ var setKey = function() {
 	aWriter.onkeydown = function(event) {
 		if (event.keyCode == ENTER_KEY) {
 			start()
+			writeInClipboard()
 			setKey()
 		}
 	}
@@ -114,4 +130,5 @@ var setKey = function() {
 function main() {
 	setKey()
 	start()
+	writeInClipboard()
 }

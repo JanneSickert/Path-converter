@@ -1,7 +1,8 @@
 const WELLCOME_MESSAGE = "Here you can insert the path from the windows folder with a "
 + "right-click and have it processed. When the path is displayed, another path can be "
 + "added with enter and all paths are formatted in the form that is common in most "
-+ "programming languages."
++ "programming languages. With <help> this message can be displayed again with "
++ "rel:<root path> all entered paths are processed relative to the root path."
 const STANDART_MESSAGE = "Path:"
 const ENTER_KEY = 13
 var aWriter = null
@@ -10,6 +11,7 @@ var arr = []
 var len = 0
 var myCodeArray = null
 var currentText = null
+var startIndex = 0
 
 function writeInClipboard() {
 	function copy2Clipboard(str) {
@@ -78,15 +80,16 @@ function writePath() {
 }
 
 function processed(val) {
+	if (val[0] == 'r' && val[1] == 'e' && val[2] == 'l' && val[3] == ':') {// make rel: paths
+		startIndex = val.length - 4
+		val = prompt(STANDART_MESSAGE)
+	}
 	if (val === "help") {
 		resetStorage()
 		location.reload()
 	} else {
 		var valAsArray = []
-		for (var i = 0; i < val.length; i++) {
-			if (val[i] == '\"') {
-				continue
-			}
+		for (var i = startIndex; i < val.length; i++) {
 			if (val[i] == '\\') {
 				valAsArray.push("/")
 			} else {
@@ -97,14 +100,39 @@ function processed(val) {
 		len++
 	}
 	writePath()
+	boo = false
+}
+
+function deleteFirstAndLast(winPath) {
+	var val = winPath
+	if (val[0] == 'r' && val[1] == 'e' && val[2] == 'l' && val[3] == ':') {
+		var v = deleteFirstAndLast(winPath.substring(4))
+		return ("rel:" + v)
+	} else {
+		var param = [winPath[0] == '\"', winPath[winPath.length - 1] == '\"']
+			if (param[0] || param[1]) {
+				var la = []
+				for (var i = 0; i < winPath.length; i++) {
+					if (winPath[i] == '\"') {
+						continue
+					} else {
+						la.push(winPath[i])
+					}
+				}
+				var nnn = arrayToString(la)
+				return nnn
+		} else {
+			return winPath
+		}
+	}
 }
 
 function known() {
-	processed(prompt(STANDART_MESSAGE))
+	processed(deleteFirstAndLast(prompt(STANDART_MESSAGE)))
 }
 
 function unconsciously() {// new user
-	processed(prompt(WELLCOME_MESSAGE))
+	processed(deleteFirstAndLast(prompt(WELLCOME_MESSAGE)))
 }
 
 function start() {

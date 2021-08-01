@@ -100,7 +100,6 @@ function processed(val) {
 		len++
 	}
 	writePath()
-	boo = false
 }
 
 function deleteFirstAndLast(winPath) {
